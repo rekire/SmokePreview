@@ -33,7 +33,14 @@ function login(success, error) {
     complete: function(data) {
       SE.authenticate({
         success: function(data) {
-          var accounts="Found your account(s):<ul>";
+          var accounts="Found your accounts:<ul>";
+		  if(data.networkUsers.length==0) {
+		    accounts="Got no accounts :-(";
+			success(data);
+			return;
+		  } else if(data.networkUsers.length==1) {
+		    accounts="Found your account:<ul>";
+		  }
           for(var i=0; i<data.networkUsers.length; i++) {
             var acc=data.networkUsers[i];
             accounts+='<li><a href="'+acc.site_url+'/users/'+acc.user_id+'">'+acc.site_name+'</a></li>';
