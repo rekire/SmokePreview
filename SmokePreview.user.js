@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name        Smoke preview
+// @name        SmokePreview
 // @namespace   eu.rekisoft.smoker
-// @description A test for now.
+// @description A Greasemonkey script to add a preview to chat messages of the SmokeDetector.
 // @include     http://chat.meta.stackexchange.com/rooms/89/tavern-on-the-meta
 // @version     1
 // @grant       none
