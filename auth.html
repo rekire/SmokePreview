@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>This is a test page.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+	<script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">SmokePreview</h1>
+      <h2 class="project-tagline">A Greasemonkey script to add a preview to chat messages of the SmokeDetector.</h2>
+      <a href="https://github.com/rekire/SmokePreview" class="btn">View on GitHub</a>
+	  <a href="https://stackapps.com/questions/6737/smokepreview-a-chat-addon-for-the-smokedetector" class="btn">View on Stack Apps</a>
+      <a href="https://github.com/rekire/SmokePreview/raw/master/SmokePreview.user.js" class="btn">Install (stable)</a>
+      <a href="https://github.com/rekire/SmokePreview/raw/develop/SmokePreview.user.js" class="btn">Install (development)</a>
+    </section>
+
+    <section class="main-content">
+	  <h1>This is a auth flow test.</h1>
+	  <p>Please exit now here is nothing to see.</p>
+	   
+<script type='text/javascript'>
+SE.init({
+  clientId: 6200,
+  key: '4JvEOlgm0aIgrcmo2hsbng((',
+  channelUrl: 'http://rekire.github.io/SmokePreview/auth.html',
+  complete: function(data) {
+    SE.authenticate({
+      success: function(data) {
+	    console.log("Success!", data);
+	  },
+      error: function(data) {
+	    console.log("Failed!", data);
+	  },
+      scope: ['write'],
+      networkUsers: true
+    });
+  }
+});
+</script>
+	
+	  <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/rekire/SmokePreview">SmokePreview</a> is maintained by <a href="https://github.com/rekire">rekire</a>.</span>
+        <span class="site-footer-credits">This page was written by hand using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
