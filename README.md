@@ -7,8 +7,6 @@ to add a preview to chat messages of the [SmokeDetector](https://github.com/Char
 Messages which are deleted while loading the preview will get a opacity of 50%
 to make clear that this is not relevant.
 
-This code is licensed under the [Rekisoft Public License](http://www.rekisoft.eu/licenses/rkspl.html).
-
 ##How can I get it?
 
 1. Install [Greasemonkey](https://addons.mozilla.org/firefox/addon/greasemonkey/) (for Firefox) or 
@@ -24,5 +22,7 @@ This code is licensed under the [Rekisoft Public License](http://www.rekisoft.eu
 
 ##How does it look?
 ![Preview](screenshot1.png)
-![A deleted post](screenshot1.png)
+![A deleted post](screenshot2.png)
 
+##License
+This code is licensed under the [Rekisoft Public License](http://www.rekisoft.eu/licenses/rkspl.html).
