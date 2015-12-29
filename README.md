@@ -17,8 +17,9 @@ to make clear that this is not relevant.
    which will been updated more often (theoretically).
 
 ##Planned features
-- Add option to mark a message as spam from the chat.
+- Hide message if you are not registered on that site.
 - Hide preview when a user send a gone message.
+- Make ignored sites configurable.
 
 ##How does it look?
 ![Preview](screenshot1.png)

@@ -5,9 +5,13 @@
 // @include     http://chat.meta.stackexchange.com/rooms/89/tavern-on-the-meta
 // @include     http://chat.stackexchange.com/rooms/11540/charcoal-hq
 // @include     http://rekire.github.io/SmokePreview/auth.html
-// @version     15122901
-// @grant       none
+// @version     15122902
+// @grant       GM_getValue
+// @grant       GM_setValue
 // ==/UserScript==
+
+unsafeWindow.sp_load = GM_getValue;
+unsafeWindow.sp_save = GM_setValue;
 
 // some special handling for the login flow. I need to store the access
 // key so I need to be informed which I try to do here.
@@ -16,18 +20,24 @@ if(location.href == "http://rekire.github.io/SmokePreview/auth.html") {
     invokeLogin = function() {
       login(function(data) {
         console.log("Wohoo", data);
-        // TODO save the sites an token.
+        for(var i = 0; i<data.networkUsers.length; i++) {
+          var acc = data.networkUsers[i];
+          sp_save(acc.site_url.substr(acc.site_url.indexOf('//') + 2), acc.reputation);
+          sp_save("token", data.accessToken);
+        }
+        //
       }, function(data) {
         console.log("oh no!", data);
       });
     }
   }
-  
+    
   var script = document.createElement('script');
   script.appendChild(document.createTextNode('(' + publicApi + ')();'));
   document.body.appendChild(script);
   document.body.className = "dlg";
   document.getElementsByClassName("project-tagline")[0].innerHTML = "Please login to continue.";
+  document.getElementById("output").innerHTML = "Please click on the Authorizate App button above.";
   return;
 }
 
@@ -123,7 +133,7 @@ function showPreview(response) {
       '" title="' + post.owner.display_name + '" src="' + post.owner.profile_image +
       '" class="user-gravatar32">' + resp.items[0].body + '</p>' +
       '<div class="toolbar" style="position:absolute; bottom: 0px;">' +
-      '<span class="more" onclick="authSmokePreview();">Auth test</span> ' +
+      //'<span class="more" onclick="authSmokePreview();">Auth test</span> ' +
       '<span class="more spam" onclick="markAsSpam(\'' + post.post_type + '\', \'' + link.hostname + '\', \'' +
       post.post_id + '\');" style="color:red;">Flag as SPAM</span></div>';
   }
@@ -162,20 +172,25 @@ window.addEventListener('load', function() {
 
 function publicApi() {
   authSmokePreview = function() {
-    window.open("http://rekire.github.io/SmokePreview/auth.html", "SmokeAuth", "width=400,height=300,scrollbars=1");
+    authWin = window.open("http://rekire.github.io/SmokePreview/auth.html", "SmokeAuth", "width=400,height=300,scrollbars=1");
   }
   markAsSpam = function(type, site, id) {
-    console.log("Marking " + type + " " + id + " on " + site + " as spam");
-    var token = "";
-    if(token == "") {
-      alert("You need to hardcode your token for now. Edit this script and search for:\ntoken = \"\"");
+    var token = sp_load("token");
+    if(token == null) {
+      console.log("Asking for permission...");
+      authSmokePreview();
+      lastSpam = {};
+      lastSpam.type = type;
+      lastSpam.site = site;
+      lastSpam.id = id;
+      setTimeout(authWinCloseListener, 100);
       return;
     }
+    console.log("Marking " + type + " " + id + " on " + site + " as spam");
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "https://api.stackexchange.com/2.2/" + type + "s/" + id + "/flags/add", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.onload = function(data) {
-      // TODO validate that this code works.
       var resp = JSON.parse(this.response);
       console.log("Got flag response: ", resp);
       if(resp.items != null && resp.items.length>0) {
@@ -187,5 +202,17 @@ function publicApi() {
       }
     }
     xhr.send("access_token=ZAa1xBHAC(jaTmXnsGcDfg))&key=4JvEOlgm0aIgrcmo2hsbng((&option_id=46534&preview=false&filter=!)5IW-5QuertpO1qiYmpsZQ8hEo.Y&site=" + site);
+  }
+  authWinCloseListener = function() {
+    if(authWin.closed || sp_load("token") != null) {
+      if(sp_load("token") != null) {
+        markAsSpam(lastSpam.type, lastSpam.site, lastSpam.id);
+      } else {
+        console.log("Auth failed.")
+      }
+      lastSpam = null;
+    } else {
+      setTimeout(authWinCloseListener, 100);
+    }
   }
 }
