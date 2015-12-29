@@ -5,74 +5,74 @@
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
-	<style type="text/css">
-body.dlg .btn, .hidden {
-  display:none;
-}
-body.dlg .hidden {
-  display:inline;
-}
-	</style>
+    <script type="text/javascript" src="https://api.stackexchange.com/js/2.0/all.js"></script>
+	  <style type="text/css">
+    body.dlg .btn, .hidden {
+      display:none;
+    }
+    body.dlg .hidden {
+      display:inline;
+    }
+	  </style>
   </head>
   <body>
     <section class="page-header">
       <h1 class="project-name">SmokePreview</h1>
-      <h2 class="project-tagline">A Greasemonkey script to add a preview to chat messages of the SmokeDetector.</h2>
+      <h2 class="project-tagline">A GreaseMonkey script to add a preview to chat messages of the SmokeDetector.</h2>
       <a href="https://github.com/rekire/SmokePreview" class="btn">View on GitHub</a>
       <a href="https://stackapps.com/questions/6737/smokepreview-a-chat-addon-for-the-smokedetector" class="btn">View on Stack Apps</a>
       <a href="https://github.com/rekire/SmokePreview/raw/master/SmokePreview.user.js" class="btn">Install (stable)</a>
       <a href="https://github.com/rekire/SmokePreview/raw/develop/SmokePreview.user.js" class="btn">Install (development)</a>
-	  <a href="javascript:invokeLogin();" class="btn hidden">Authorizate App</a>
+	    <a href="javascript:invokeLogin();" class="btn hidden">Authorizate App</a>
     </section>
 
     <section class="main-content">
       <h1 id="title">Login</h1>
-      <p id="output">Please <noscript>enable JavaScript and</noscript> install my Greasemonkey script to continue.</p>
+      <p id="output">Please <noscript>enable JavaScript and</noscript> install the SmokePreview GreaseMonkey script to continue.</p>
        
-<script type='text/javascript'>
-function login(success, error) {
-  SE.init({
-    clientId: 6200,
-    key: '4JvEOlgm0aIgrcmo2hsbng((',
-    channelUrl: 'http://rekire.github.io/SmokePreview/auth.html',
-    complete: function(data) {
-      SE.authenticate({
-        success: function(data) {
-          var accounts="Found your accounts:<ul>";
-		  if(data.networkUsers.length==0) {
-		    accounts="Got no accounts :-(";
-			success(data);
-			return;
-		  } else if(data.networkUsers.length==1) {
-		    accounts="Found your account:<ul>";
-		  }
-          for(var i=0; i<data.networkUsers.length; i++) {
-            var acc=data.networkUsers[i];
-            accounts+='<li><a href="'+acc.site_url+'/users/'+acc.user_id+'">'+acc.site_name+'</a></li>';
+      <script type="text/javascript">
+      function login(success, error) {
+        SE.init({
+          clientId: 6200,
+          key: '4JvEOlgm0aIgrcmo2hsbng((',
+          channelUrl: 'http://rekire.github.io/SmokePreview/auth.html',
+          complete: function(data) {
+            SE.authenticate({
+              success: function(data) {
+                var accounts = "Found your accounts:<ul>";
+                if(data.networkUsers.length == 0) {
+                  accounts = "Got no accounts :-(";
+                  success(data);
+                  return;
+                } else if(data.networkUsers.length == 1) {
+                  accounts = "Found your account:<ul>";
+                }
+                for(var i = 0; i < data.networkUsers.length; i++) {
+                  var acc = data.networkUsers[i];
+                  accounts += '<li><a href="' + acc.site_url + '/users/' + acc.user_id + '">' + acc.site_name + '</a></li>';
+                }
+                document.getElementById("title").innerHTML = 'Success!';
+                document.getElementById("output").innerHTML = accounts + '</ul>';
+                success(data);
+              },
+              error: function(data) {
+                document.getElementById("title").innerHTML = 'Sorry!';
+                document.getElementById("output").innerHTML = "Oops, something went wrong. Please check the console output and report a bug.";
+                try {
+                  console.log("Here is what went wrong:", data);
+                  error(data);
+                } catch(e) {}
+              },
+              scope: ['write_access', 'no_expiry'],
+              networkUsers: true
+            });
           }
-          document.getElementById("title").innerHTML='Success!';
-          document.getElementById("output").innerHTML=accounts+'</ul>';
-          success(data);
-        },
-        error: function(data) {
-          document.getElementById("title").innerHTML='Sorry!';
-          document.getElementById("output").innerHTML="Oops, something went wrong. Please check the console output and report a bug.";
-          try {
-            console.log("Here is what went wrong:", data);
-            error(data);
-          } catch(e) {}
-        },
-        scope: ['write_access'],
-        networkUsers: true
-      });
-    }
-  });
-}
-</script>
+        });
+      }
+      </script>
     
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/rekire/SmokePreview">SmokePreview</a> is maintained by <a href="https://github.com/rekire">rekire</a>.</span>
